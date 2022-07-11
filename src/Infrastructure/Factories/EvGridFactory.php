@@ -8,6 +8,9 @@ use Kata\Infrastructure\Adapters\EvGridAdapter;
 
 class EvGridFactory implements BuildGridEvFactory
 {
+    /**
+     * @return EvGridInterface
+     */
     public static function build(): EvGridInterface
     {
         return new EvGridAdapter();

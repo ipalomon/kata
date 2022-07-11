@@ -19,11 +19,13 @@ if($validateJsonStructure->validateStructure()){
     }
     $outputGrid = EvGridFactory::build();
     $controllerGrid = new EvGridController($outputGrid);
-    $controllerGrid($positions, $limit);
+
+    $evGrid = $controllerGrid($positions, $limit);
 
     foreach ($electricVehicles["evs"] as $key => $electricVehicle){
         $output = MoveEvFactory::build();
-        $controller = new MoveController($output);
+
+        $controller = new MoveController($output, $evGrid);
         $controller($electricVehicle["position"], $electricVehicle["explore_area"]);
     }
 }

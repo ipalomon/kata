@@ -6,5 +6,5 @@ use Kata\Domain\Entities\Ev;
 
 interface EvInterface
 {
-    public function move(Ev $ev): void;
+    public function save(Ev $ev): void;
 }

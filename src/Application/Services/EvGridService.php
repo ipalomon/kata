@@ -9,17 +9,26 @@ class EvGridService
 {
     private $output;
 
+    /**
+     * Inject dependencies
+     * @param EvGridInterface $output
+     */
     function __construct(EvGridInterface $output)
     {
         $this->output = $output;
     }
 
-    public function __invoke($position, $limit): void
+    /**
+     * @param $position
+     * @param $limit
+     * @return EvGrid
+     */
+    public function __invoke($position, $limit): EvGrid
     {
 
         // Build de Grid Object
         $evGrid = new EvGrid($position, $limit);
-        //
-        $this->output->addPosition($evGrid);
+        // Return this Grid witch positions and one limit
+        return $this->output->addPosition($evGrid);
     }
 }

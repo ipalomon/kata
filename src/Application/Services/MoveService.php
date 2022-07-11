@@ -3,24 +3,45 @@
 namespace Kata\Application\Services;
 
 use Kata\Domain\Entities\Ev;
+use Kata\Domain\Entities\EvGrid;
 use Kata\Domain\Interfaces\EvInterface;
+use RuntimeException;
 
 class MoveService
 {
     private $output;
+    private $evGrid;
 
-    function __construct(EvInterface $output)
+    /**
+     * Inject dependencies
+     * @param EvInterface $output
+     * @param EvGrid $evGrid
+     */
+    function __construct(EvInterface $output, EvGrid $evGrid)
     {
         $this->output = $output;
+        $this->evGrid = $evGrid;
     }
 
-    public function __invoke($position, $exploreArea): void
+    /**
+     * @param string $position
+     * @param string $exploreArea
+     * @return void
+     */
+    public function __invoke(string $position, string $exploreArea): void
     {
 
-        // Buid de Ev Object
+        // Build de Ev Object
         $ev = new Ev($position, $exploreArea);
-        // Move it
-        $this->output->move($ev);
+
+        $positions = $this->evGrid->getPositions();
+        $limit = $this->evGrid->getLimitXY();
+
+        if(in_array($position,$positions)){
+            throw new RuntimeException('This position is busy into Grid');
+        }
+        // Save via doctrine entityManager
+        $this->output->save($ev);
     }
 
 }

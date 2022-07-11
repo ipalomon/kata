@@ -3,6 +3,7 @@
 namespace Kata\Infrastructure\Controllers;
 
 use Kata\Application\Services\EvGridService;
+use Kata\Domain\Entities\EvGrid;
 use Kata\Domain\Interfaces\EvGridInterface;
 
 class EvGridController
@@ -17,10 +18,16 @@ class EvGridController
         $this->output = $output;
     }
 
-    public function __invoke($position, $limit): void
+    /**
+     * @param $position
+     * @param $limit
+     * @return EvGrid
+     */
+    public function __invoke($position, $limit): EvGrid
     {
         $outputGrid = new EvGridService($this->output);
-        $outputGrid($position, $limit);
+        return $outputGrid($position, $limit);
+
     }
 
 }
