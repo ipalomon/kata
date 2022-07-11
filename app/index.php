@@ -2,31 +2,29 @@
 require_once "../src/autoload.php";
 
 use Kata\App\ValidateJsonStructure;
-use Kata\Infrastructure\Controllers\OutputController;
-use Kata\Infrastructure\Factories\OutputFactory;
+use Kata\Infrastructure\Controllers\EvGridController;
+use Kata\Infrastructure\Controllers\MoveController;
+use Kata\Infrastructure\Factories\EvGridFactory;
+use Kata\Infrastructure\Factories\MoveEvFactory;
 
 
-//$electricVehicles = (json_decode(file_get_contents("php://input"), true));
-$electricVehicles= json_decode('{
-    "limit": "5 5",
-    "evs": [
-        {
-            "position": "1 2 N",
-            "explore_area": "LMLMLMLMM"
-        },
-        {
-            "position": "3 3 E",
-            "explore_area": "MMRMMRMRRM"
-        }
-    ]
-}',true);
+$electricVehicles = (json_decode(file_get_contents("php://input"), true));
+
 $validateJsonStructure = new ValidateJsonStructure($electricVehicles);
 if($validateJsonStructure->validateStructure()){
     $limit = $electricVehicles["limit"];
+    $positions = array();
     foreach ($electricVehicles["evs"] as $key => $electricVehicle){
-        $output = OutputFactory::build();
-        $controller = new OutputController($output);
-        $controller($electricVehicle["position"], $electricVehicle["explore_area"], $limit);
+        $positions[] = $electricVehicle["position"];
+    }
+    $outputGrid = EvGridFactory::build();
+    $controllerGrid = new EvGridController($outputGrid);
+    $controllerGrid($positions, $limit);
+
+    foreach ($electricVehicles["evs"] as $key => $electricVehicle){
+        $output = MoveEvFactory::build();
+        $controller = new MoveController($output);
+        $controller($electricVehicle["position"], $electricVehicle["explore_area"]);
     }
 }
 else{

@@ -7,64 +7,45 @@ class Ev
     private $evId;
     private $position;
     private $exploreArea;
-    private $limit;
 
     /**
      * @param string $position
      * @param string $exploreArea
-     * @param string $limit
      */
-    public function __construct(string $position, string $exploreArea, string $limit)
+    public function __construct(string $position, string $exploreArea)
     {
         $this->position = $position;
         $this->exploreArea = $exploreArea;
-        $this->limit = $limit;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param mixed $position
-     */
-    public function setPosition($position): void
-    {
-        $this->position = $position;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getExploreArea()
-    {
-        return $this->exploreArea;
     }
 
     /**
      * @return string
      */
-    public function getLimit(): string
+    public function getPosition(): string
     {
-        return $this->limit;
+        return $this->position;
     }
 
     /**
-     * @param string $limit
+     * @param string $position
      */
-    public function setLimit(string $limit): void
+    public function setPosition(string $position): void
     {
-        $this->limit = $limit;
+        $this->position = $position;
     }
 
     /**
-     * @param mixed $exploreArea
+     * @return string
      */
-    public function setExploreArea($exploreArea): void
+    public function getExploreArea(): string
+    {
+        return $this->exploreArea;
+    }
+
+     /**
+     * @param string $exploreArea
+     */
+    public function setExploreArea(string $exploreArea): void
     {
         $this->exploreArea = $exploreArea;
     }
