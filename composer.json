@@ -2,7 +2,8 @@
     "name": "wallbox/wallbox-php-backend-kata",
     "require": {
         "phpunit/phpunit": "^9.5",
-        "ext-json": "*"
+        "ext-json": "*",
+      "ext-ctype": "*"
     },
     "description": "PHP Backend Kata",
     "autoload": {

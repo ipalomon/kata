@@ -2,50 +2,53 @@
 
 namespace Kata\Domain\Entities;
 
+use Kata\Domain\ValueObjects\ExploreArea;
+use Kata\Domain\ValueObjects\Position;
+
 class Ev
 {
     private $evId;
-    private $position;
-    private $exploreArea;
+    private Position $position;
+    private string $exploreArea;
 
     /**
-     * @param string $position
-     * @param string $exploreArea
+     * @param Position $position
+     * @param ExploreArea $exploreArea
      */
-    public function __construct(string $position, string $exploreArea)
+    public function __construct(Position $position, ExploreArea $exploreArea)
     {
         $this->position = $position;
         $this->exploreArea = $exploreArea;
     }
 
     /**
-     * @return string
+     * @return Position
      */
-    public function getPosition(): string
+    public function getPosition(): Position
     {
         return $this->position;
     }
 
     /**
-     * @param string $position
+     * @param Position $position
      */
-    public function setPosition(string $position): void
+    public function setPosition(Position $position): void
     {
         $this->position = $position;
     }
 
     /**
-     * @return string
+     * @return ExploreArea
      */
-    public function getExploreArea(): string
+    public function getExploreArea(): ExploreArea
     {
         return $this->exploreArea;
     }
 
-     /**
-     * @param string $exploreArea
+    /**
+     * @param ExploreArea $exploreArea
      */
-    public function setExploreArea(string $exploreArea): void
+    public function setExploreArea(ExploreArea $exploreArea): void
     {
         $this->exploreArea = $exploreArea;
     }

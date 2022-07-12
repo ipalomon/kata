@@ -2,10 +2,12 @@
 
 namespace Kata\Domain\Entities;
 
+use Kata\Domain\ValueObjects\Position;
+
 class EvGrid
 {
-    private $positions;
-    private $limitXY;
+    private array $positions;
+    private string $limitXY;
 
     /**
      * @param array $positions
@@ -47,6 +49,11 @@ class EvGrid
     public function setLimitXY(string $limitXY): void
     {
         $this->limitXY = $limitXY;
+    }
+
+    public function setPosition(Position $position):void
+    {
+        $this->positions[] = $position;
     }
 
 

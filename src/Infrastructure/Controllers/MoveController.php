@@ -5,11 +5,13 @@ namespace Kata\Infrastructure\Controllers;
 use Kata\Application\Services\MoveService;
 use Kata\Domain\Entities\EvGrid;
 use Kata\Domain\Interfaces\EvInterface;
+use Kata\Domain\ValueObjects\ExploreArea;
+use Kata\Domain\ValueObjects\Position;
 
 class MoveController
 {
-    private $output;
-    private $evGrid;
+    private EvInterface $output;
+    private EvGrid $evGrid;
 
     /**
      * @param EvInterface $output
@@ -22,17 +24,16 @@ class MoveController
     }
 
     /**
-     * @param string $position
-     * @param string $exploreArea
+     * @param Position $position
+     * @param ExploreArea $exploreArea
      * @return void
      */
-    public function __invoke(string $position, string $exploreArea): void
+    public function __invoke(Position $position, ExploreArea $exploreArea): void
     {
-
         // Call service move MoveService
         $outputMove = new MoveService($this->output, $this->evGrid);
         // Move it
-        $outputMove($position, $exploreArea);
+        $response = $outputMove(new Position($position), new ExploreArea($exploreArea));
 
     }
 

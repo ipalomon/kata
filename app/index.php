@@ -2,6 +2,8 @@
 require_once "../src/autoload.php";
 
 use Kata\App\ValidateJsonStructure;
+use Kata\Domain\ValueObjects\ExploreArea;
+use Kata\Domain\ValueObjects\Position;
 use Kata\Infrastructure\Controllers\EvGridController;
 use Kata\Infrastructure\Controllers\MoveController;
 use Kata\Infrastructure\Factories\EvGridFactory;
@@ -26,7 +28,7 @@ if($validateJsonStructure->validateStructure()){
         $output = MoveEvFactory::build();
 
         $controller = new MoveController($output, $evGrid);
-        $controller($electricVehicle["position"], $electricVehicle["explore_area"]);
+        $controller(new Position($electricVehicle["position"]), new ExploreArea($electricVehicle["explore_area"]));
     }
 }
 else{
