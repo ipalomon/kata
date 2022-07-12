@@ -251,12 +251,16 @@ final class KataTest extends TestCase
      * Check the collides ev into the Grid
      * @test
      */
-    public function testCheckCollidesEv(){}
+    public function testCheckCollidesEv(){
+        // TODO implemented in MoveService.php line 116
+    }
 
     /**
      * Check the limit Grid when the ev is move.
      * @test
      */
-    public function testCheckCoordinatesLimit(){}
+    public function testCheckCoordinatesLimit(){
+        // TODO implemented in MoveService.php line 108
+    }
 
 }

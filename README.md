@@ -1,3 +1,16 @@
+# Download project
+## - git clone https://github.com/ipalomon/kata.git
+# Install
+## - Install via composer go to directory and type composer install.
+# Test
+## File KataTest.php run via PHPUnit 9.5.21 
+# - use PhpStorm 2022.1.3 or configure it or use the follow command:
+# - C:\<route your php>\bin\php\php7.4.9\php.exe C:/<route this project>/kata/vendor/phpunit/phpunit/phpunit --configuration C:\<route this project>\kata\phpunit.xml --filter "/(Kata\\Tests\\KataTest::testSetNewPosition)( .*)?$/" --test-suffix KataTest.php C:\<route this project>\kata\tests --teamcity
+# Version php7.4.9
+ 
+<hr/>
+
+
 # Backend Challenge
 
 ## Learning Competencies
