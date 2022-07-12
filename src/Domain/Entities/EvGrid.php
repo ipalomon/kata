@@ -4,6 +4,9 @@ namespace Kata\Domain\Entities;
 
 use Kata\Domain\ValueObjects\Position;
 
+/**
+ * The Grid Have a positions Ev and the limit Grid
+ */
 class EvGrid
 {
     private array $positions;

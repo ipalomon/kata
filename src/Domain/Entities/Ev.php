@@ -5,6 +5,9 @@ namespace Kata\Domain\Entities;
 use Kata\Domain\ValueObjects\ExploreArea;
 use Kata\Domain\ValueObjects\Position;
 
+/**
+ * The Electric Vehicle Class provides the position and explore area
+ */
 class Ev
 {
     private $evId;

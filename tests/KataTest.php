@@ -13,8 +13,11 @@ use PHPUnit\Framework\TestCase;
 
 final class KataTest extends TestCase
 {
+    // Structure the response
     const KEYS = array('limit', 'evs', "subways" => array("position", "explore_area"));
+
     /**
+     *
      * @test
      */
     public function itShouldInitialCase(): void
@@ -24,6 +27,7 @@ final class KataTest extends TestCase
     }
 
     /**
+     * Validate structure the request
      * @test
      */
     public function testStructureDataIsValid(): void
@@ -35,6 +39,7 @@ final class KataTest extends TestCase
     }
 
     /**
+     * Invalid Structure request see the line 49 PEPE expected limit
      * @test
      */
     public function testStructureDataIsNotValid(): void
@@ -59,6 +64,10 @@ final class KataTest extends TestCase
         self::assertFalse($expectedValue, "Ok This Json request is NOT valid but expected true");
     }
 
+    /**
+     * Dummy data for test
+     * @return array
+     */
     public function getDummyData():array{
         return json_decode('{
                 "limit": "5 5",
@@ -75,6 +84,11 @@ final class KataTest extends TestCase
             }', true);
     }
 
+    /**
+     * Check the structure request
+     * @param $dummyStructureArray
+     * @return bool
+     */
     public function isValidStructure($dummyStructureArray):bool
     {
         $spectedValue = false;
@@ -91,7 +105,10 @@ final class KataTest extends TestCase
         }
         return $spectedValue;
     }
-
+    /**
+     * Check the length the position
+     * @test
+     */
     // The value Object test
     public function testGetCoordinatesAndOrientation(): void
     {
@@ -99,6 +116,10 @@ final class KataTest extends TestCase
         self::assertCount(3, explode(" ", $position));
     }
 
+    /**
+     * Check the correct position "x y cardinal point" and The cardinal point match be N, E, S or W
+     * @test
+     */
     public function testValidateCoordinatesAndOrientation(){
         $position = "1 2 N";
         $coordinatesXyOrientation = $this->getCoordinatesAndOrientation($position);
@@ -124,6 +145,10 @@ final class KataTest extends TestCase
         self::assertTrue($r);
     }
 
+    /**
+     * Check the correct position NO VALID "x y cardinal point" and The cardinal point match be N, E, S or W
+     * @test
+     */
     public function testNOTValidateCoordinates(){
         $position = "1 f N";
         $coordinatesXyOrientation = $this->getCoordinatesAndOrientation($position);
@@ -139,6 +164,10 @@ final class KataTest extends TestCase
         self::assertFalse($r );
     }
 
+    /**
+     * Check the Not Valid cardinal point
+     * @test
+     */
     public function testNOTValidateOrientation(){
         $position = "1 2 NN";
         $coordinatesXyOrientation = $this->getCoordinatesAndOrientation($position);
@@ -159,6 +188,10 @@ final class KataTest extends TestCase
         return explode(" ", $position);
     }
 
+    /**
+     * Set the new position
+     * @test
+     */
     public function testSetNewPosition(){
 
         $exploreArea = new ExploreArea("MMRMMRMRRM");
@@ -205,13 +238,25 @@ final class KataTest extends TestCase
                     $coordinatesXyOrientation[2] = "N";
                 }
             }
-            echo $coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2]."\n";
-
         }
+        self::assertEquals("5 1 E", $coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2]);
+
         $newPosition = new Position($coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2]);
         $ev->setPosition($newPosition);
         $evGrid->setPosition($ev->getPosition());
         //echo $coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2];
     }
+
+    /**
+     * Check the collides ev into the Grid
+     * @test
+     */
+    public function testCheckCollidesEv(){}
+
+    /**
+     * Check the limit Grid when the ev is move.
+     * @test
+     */
+    public function testCheckCoordinatesLimit(){}
 
 }

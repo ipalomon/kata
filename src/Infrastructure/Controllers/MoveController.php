@@ -8,6 +8,9 @@ use Kata\Domain\Interfaces\EvInterface;
 use Kata\Domain\ValueObjects\ExploreArea;
 use Kata\Domain\ValueObjects\Position;
 
+/**
+ * This Controller coll the service for establish the new response.
+ */
 class MoveController
 {
     private EvInterface $output;
@@ -28,13 +31,12 @@ class MoveController
      * @param ExploreArea $exploreArea
      * @return void
      */
-    public function __invoke(Position $position, ExploreArea $exploreArea): void
+    public function __invoke(Position $position, ExploreArea $exploreArea): array
     {
         // Call service move MoveService
         $outputMove = new MoveService($this->output, $this->evGrid);
         // Move it
-        $response = $outputMove(new Position($position), new ExploreArea($exploreArea));
-
+        return $outputMove(new Position($position), new ExploreArea($exploreArea));
     }
 
 }

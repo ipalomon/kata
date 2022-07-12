@@ -7,12 +7,14 @@ use Kata\Domain\Entities\EvGrid;
 use Kata\Domain\Interfaces\EvInterface;
 use Kata\Domain\ValueObjects\ExploreArea;
 use Kata\Domain\ValueObjects\Position;
-use RuntimeException;
 
+/**
+ * This service move the Ev and update the Grid Ev´s positions
+ */
 class MoveService
 {
-    private $output;
-    private $evGrid;
+    private EvInterface $output;
+    private EvGrid $evGrid;
 
     /**
      * Inject dependencies
@@ -45,31 +47,32 @@ class MoveService
             return array("code"=>"409","message"=>"Invalid explorer area  ".$exploreArea);
         }
         // Give the positions into the Gird and limit the Gird.
-        $positions = $this->evGrid->getPositions();
+
         $limit = $this->evGrid->getLimitXY();
 
         $newPositionResponse = $this->moveEv($position, $exploreArea, $limit, $ev);
 
-        echo $limit;
-        print_r($positions);
-        echo $position;
-        echo $exploreArea;
         // Save via doctrine entityManager
         $this->output->save($ev);
+
+        return $newPositionResponse;
     }
 
-    private function moveEv(Position $position, ExploreArea $exploreArea, string $limit, Ev $ev):Ev{
+    /**
+     * @param Position $position
+     * @param ExploreArea $exploreArea
+     * @param string $limit
+     * @param Ev $ev
+     * @return string[]
+     */
+    private function moveEv(Position $position, ExploreArea $exploreArea, string $limit, Ev $ev):array{
         $exploreAreaPerUnits = str_split($exploreArea);
         $coordinatesXY = str_split(str_replace(" ","",$limit));
         $limitX = $coordinatesXY[0];
         $limitY = $coordinatesXY[1];
-        $coordinatesXY = str_split(str_replace(" ","","5 5"));
-        $limitX = $coordinatesXY[0];
-        $limitY = $coordinatesXY[1];
+
         $coordinatesXyOrientation = $position->getCoordinatesAndOrientation($position);
         foreach ($exploreAreaPerUnits as $exploreAreaPerUnit){
-            $x = $coordinatesXyOrientation[0];
-            $y = $coordinatesXyOrientation[1];
             $orientation = $coordinatesXyOrientation[2];
             if($exploreAreaPerUnit == "M"){
                 if($orientation == "N"){
@@ -102,13 +105,31 @@ class MoveService
                     $coordinatesXyOrientation[2] = "N";
                 }
             }
-            echo $coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2]."\n";
+            // Check limit for each the new position Ev
+            if($coordinatesXyOrientation[0] > $limitX || $coordinatesXyOrientation[0] < 0){
+                return array("code"=>"409","message"=>"Invalid position. X Out of Grid  ".$coordinatesXyOrientation[0]);
+            }
+            if($coordinatesXyOrientation[1] > $limitY || $coordinatesXyOrientation[1] < 0){
+                return array("code"=>"409","message"=>"Invalid position. Y Out of Grid  ".$coordinatesXyOrientation[1]);
+            }
 
+            // Check collides witch other position this Ev into de Grid
+            $positions = $this->evGrid->getPositions();
+            if(in_array($coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2], $positions)){
+                return array("code"=>"409","message"=>"Invalid position. collides with another grid position  ".$coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2]);
+            }
         }
+        // Delete old position in the Grid
+        $positions = $this->evGrid->getPositions();
+        $oldPosition[] = $ev->getPosition();
+        $positions = array_diff($positions, $oldPosition);
+        // Set new position in the grid
+        $positions[] = $coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2];
+        $this->evGrid->setPositions($positions);
+
         $newPosition = new Position($coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2]);
         $ev->setPosition($newPosition);
         $this->evGrid->setPosition($ev->getPosition());
-      return $ev;
+        return array("code"=> "200", "message"=>"New position has be change correctly ".$coordinatesXyOrientation[0]." ".$coordinatesXyOrientation[1]." ".$coordinatesXyOrientation[2]);
     }
-
 }
